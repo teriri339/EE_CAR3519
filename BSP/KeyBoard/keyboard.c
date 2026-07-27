@@ -18,6 +18,15 @@ static const char key_map[4][4] = {
     {'*', '0', '#', 'D'}
 };
 
+static const uint32_t row_pins[4] = {
+    keyboard_H1_PIN, keyboard_H2_PIN,
+    keyboard_H3_PIN, keyboard_H4_PIN
+};
+static const uint32_t col_pins[4] = {
+    keyboard_V1_PIN, keyboard_V2_PIN,
+    keyboard_V3_PIN, keyboard_V4_PIN
+};
+
 void keyboard_init(void)
 {
     /* H1~H4 初始化为高电平 */
@@ -28,20 +37,12 @@ void keyboard_init(void)
 
 char get_keyboard_value(void)
 {
-    uint32_t row_pins[4] = {
-        keyboard_H1_PIN, keyboard_H2_PIN,
-        keyboard_H3_PIN, keyboard_H4_PIN
-    };
-    uint32_t col_pins[4] = {
-        keyboard_V1_PIN, keyboard_V2_PIN,
-        keyboard_V3_PIN, keyboard_V4_PIN
-    };
     int key_value = 0;
     int i, j;
 
     for (i = 0; i < 4; i++)
     {
-        /* 将当前行拉低，其他行拉高 */
+        /* 将当前行拉低 */
         DL_GPIO_clearPins(keyboard_PORT, row_pins[i]);
         delay_cycles(5);
 
@@ -59,7 +60,7 @@ char get_keyboard_value(void)
     }
 
     if (key_value == 0)
-        return 0;   /* 无按键 */
+        return 0;
 
     return key_map[(key_value - 1) / 4][(key_value - 1) % 4];
 }

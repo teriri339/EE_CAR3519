@@ -4,6 +4,44 @@
 /* 前向声明 */
 static void show_main_menu(int speed);
 
+/* 电机运行方向 */
+typedef enum {
+    DIR_STOP = 0,
+    DIR_FORWARD,
+    DIR_REVERSE,
+    DIR_LEFT,
+    DIR_RIGHT
+} Direction_t;
+
+/* 按方向和速度驱动电机 */
+static void apply_direction(Direction_t dir, int speed)
+{
+    switch (dir)
+    {
+    case DIR_FORWARD:
+        motor_set_speed(MOTOR1, speed);
+        motor_set_speed(MOTOR2, speed);
+        break;
+    case DIR_REVERSE:
+        motor_set_speed(MOTOR1, -speed);
+        motor_set_speed(MOTOR2, -speed);
+        break;
+    case DIR_LEFT:
+        motor_set_speed(MOTOR1, speed);
+        motor_set_speed(MOTOR2, -speed);
+        break;
+    case DIR_RIGHT:
+        motor_set_speed(MOTOR1, -speed);
+        motor_set_speed(MOTOR2, speed);
+        break;
+    case DIR_STOP:
+    default:
+        motor_set_speed(MOTOR1, 0);
+        motor_set_speed(MOTOR2, 0);
+        break;
+    }
+}
+
 int main(void)
 {
     SYSCFG_DL_init();
@@ -11,6 +49,7 @@ int main(void)
     char key;
     char last_key = 0;
     static int current_speed = 500;
+    static Direction_t current_dir = DIR_STOP;
     static bool line_follow_active = false;
     static bool show_pid_params = false;
     static uint16_t follow_cnt = 0;
@@ -41,8 +80,8 @@ int main(void)
                 {
                     line_follow_active = false;
                     show_pid_params = false;
-                    motor_set_speed(MOTOR1, 0);
-                    motor_set_speed(MOTOR2, 0);
+                    current_dir = DIR_STOP;
+                    apply_direction(DIR_STOP, 0);
                 }
             }
 
@@ -59,6 +98,7 @@ int main(void)
                 {
                     current_speed -= 100;
                     if (current_speed < 0) current_speed = 0;
+                    apply_direction(current_dir, current_speed);
                     {
                         char buf[17];
                         snprintf(buf, sizeof(buf), "Speed: %-4d     ", current_speed);
@@ -79,6 +119,7 @@ int main(void)
                 {
                     current_speed += 100;
                     if (current_speed > 1000) current_speed = 1000;
+                    apply_direction(current_dir, current_speed);
                     {
                         char buf[17];
                         snprintf(buf, sizeof(buf), "Speed: %-4d     ", current_speed);
@@ -90,6 +131,7 @@ int main(void)
 
             case '#':   /* 速度重置 500 */
                 current_speed = 500;
+                apply_direction(current_dir, current_speed);
                 {
                     char buf[17];
                     snprintf(buf, sizeof(buf), "Speed: %-4d     ", current_speed);
@@ -107,8 +149,8 @@ int main(void)
                 }
                 else
                 {
-                    motor_set_speed(MOTOR1, current_speed);
-                    motor_set_speed(MOTOR2, current_speed);
+                    current_dir = DIR_FORWARD;
+                    apply_direction(DIR_FORWARD, current_speed);
                     OLED_ShowString(0, 6, (u8*)"Forward         ");
                 }
                 break;
@@ -122,8 +164,8 @@ int main(void)
                 }
                 else
                 {
-                    motor_set_speed(MOTOR1, -current_speed);
-                    motor_set_speed(MOTOR2, -current_speed);
+                    current_dir = DIR_REVERSE;
+                    apply_direction(DIR_REVERSE, current_speed);
                     OLED_ShowString(0, 6, (u8*)"Reverse         ");
                 }
                 break;
@@ -137,8 +179,8 @@ int main(void)
                 }
                 else
                 {
-                    motor_set_speed(MOTOR1, current_speed);
-                    motor_set_speed(MOTOR2, -current_speed);
+                    current_dir = DIR_LEFT;
+                    apply_direction(DIR_LEFT, current_speed);
                     OLED_ShowString(0, 6, (u8*)"Spin Left       ");
                 }
                 break;
@@ -152,8 +194,8 @@ int main(void)
                 }
                 else
                 {
-                    motor_set_speed(MOTOR1, -current_speed);
-                    motor_set_speed(MOTOR2, current_speed);
+                    current_dir = DIR_RIGHT;
+                    apply_direction(DIR_RIGHT, current_speed);
                     OLED_ShowString(0, 6, (u8*)"Spin Right      ");
                 }
                 break;
@@ -161,21 +203,21 @@ int main(void)
             case '5':   /* 停止 / 循迹停止 */
                 if (line_follow_active)
                 {
-                    motor_set_speed(MOTOR1, 0);
-                    motor_set_speed(MOTOR2, 0);
+                    current_dir = DIR_STOP;
+                    apply_direction(DIR_STOP, 0);
                     show_pid_params = true;
                 }
                 else
                 {
-                    motor_set_speed(MOTOR1, 0);
-                    motor_set_speed(MOTOR2, 0);
+                    current_dir = DIR_STOP;
+                    apply_direction(DIR_STOP, 0);
                     OLED_ShowString(0, 6, (u8*)"Stop            ");
                 }
                 break;
 
             case '0':   /* 紧急停止 */
-                motor_set_speed(MOTOR1, 0);
-                motor_set_speed(MOTOR2, 0);
+                current_dir = DIR_STOP;
+                apply_direction(DIR_STOP, 0);
                 OLED_ShowString(0, 6, (u8*)"Emergency Stop! ");
                 break;
 
@@ -196,6 +238,8 @@ int main(void)
             case '*':   /* 返回主菜单 */
                 line_follow_active = false;
                 show_pid_params = false;
+                current_dir = DIR_STOP;
+                apply_direction(DIR_STOP, 0);
                 show_main_menu(current_speed);
                 break;
 
@@ -252,8 +296,8 @@ int main(void)
                 else
                 {
                     show_pid_params = false;
-                    motor_set_speed(MOTOR1, 0);
-                    motor_set_speed(MOTOR2, 0);
+                    current_dir = DIR_STOP;
+                    apply_direction(DIR_STOP, 0);
                     show_main_menu(current_speed);
                 }
                 break;
@@ -342,11 +386,11 @@ static void show_main_menu(int speed)
     char buf[17];
     snprintf(buf, sizeof(buf), "Speed: %-4d     ", speed);
     OLED_ShowString(0, 0, (u8*)buf);
-    OLED_ShowString(0, 1, (u8*)"2:Up 8:Dn 4:L 6:R");
-    OLED_ShowString(0, 2, (u8*)"1:-Spd 3:+Spd   ");
-    OLED_ShowString(0, 3, (u8*)"#:Rst  5:Stop   ");
-    OLED_ShowString(0, 4, (u8*)"0:Estp A:Gray   ");
-    OLED_ShowString(0, 5, (u8*)"B:LF   *:Back   ");
-    OLED_ShowString(0, 6, (u8*)"                ");
+    OLED_ShowString(0, 1, (u8*)"2:Fwd   8:Rev   ");
+    OLED_ShowString(0, 2, (u8*)"4:Left  6:Right ");
+    OLED_ShowString(0, 3, (u8*)"1:-Spd  3:+Spd  ");
+    OLED_ShowString(0, 4, (u8*)"#:Rst   5:Stop  ");
+    OLED_ShowString(0, 5, (u8*)"0:Estp  A:Gray  ");
+    OLED_ShowString(0, 6, (u8*)"B:LF   *:Menu   ");
     OLED_ShowString(0, 7, (u8*)"                ");
 }
