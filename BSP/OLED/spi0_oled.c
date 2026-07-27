@@ -126,7 +126,7 @@ void OLED_ShowChar(u8 x, u8 y, u8 chr)
 	}
 	else
 	{
-		OLED_Set_Pos(x, y + 1);
+		OLED_Set_Pos(x, y);
 		for (i = 0; i < 6; i++)
 			OLED_WR_Byte(F6x8[c][i], OLED_DATA);
 	}

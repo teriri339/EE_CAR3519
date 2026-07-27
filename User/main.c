@@ -59,13 +59,12 @@ int main(void)
                 {
                     current_speed -= 100;
                     if (current_speed < 0) current_speed = 0;
-                    OLED_ShowString(0, 0, (u8*)"Speed:         ");
                     {
                         char buf[17];
-                        snprintf(buf, sizeof(buf), "Speed:%3d      ", current_speed);
+                        snprintf(buf, sizeof(buf), "Speed: %-4d     ", current_speed);
                         OLED_ShowString(0, 0, (u8*)buf);
                     }
-                    OLED_ShowString(0, 2, (u8*)"Speed --       ");
+                    OLED_ShowString(0, 6, (u8*)"Speed-100       ");
                 }
                 break;
 
@@ -80,20 +79,23 @@ int main(void)
                 {
                     current_speed += 100;
                     if (current_speed > 1000) current_speed = 1000;
-                    OLED_ShowString(0, 0, (u8*)"Speed:         ");
                     {
                         char buf[17];
-                        snprintf(buf, sizeof(buf), "Speed:%3d      ", current_speed);
+                        snprintf(buf, sizeof(buf), "Speed: %-4d     ", current_speed);
                         OLED_ShowString(0, 0, (u8*)buf);
                     }
-                    OLED_ShowString(0, 2, (u8*)"Speed ++       ");
+                    OLED_ShowString(0, 6, (u8*)"Speed+100       ");
                 }
                 break;
 
             case '#':   /* 速度重置 500 */
                 current_speed = 500;
-                OLED_ShowString(0, 0, (u8*)"Speed: 500     ");
-                OLED_ShowString(0, 2, (u8*)"Speed Reset 500");
+                {
+                    char buf[17];
+                    snprintf(buf, sizeof(buf), "Speed: %-4d     ", current_speed);
+                    OLED_ShowString(0, 0, (u8*)buf);
+                }
+                OLED_ShowString(0, 6, (u8*)"Speed Reset 500 ");
                 break;
 
             case '2':   /* 前进 / 循迹 KD-- */
@@ -107,8 +109,7 @@ int main(void)
                 {
                     motor_set_speed(MOTOR1, current_speed);
                     motor_set_speed(MOTOR2, current_speed);
-                    OLED_ShowString(0, 2, (u8*)"Forward        ");
-                    OLED_ShowString(0, 4, (u8*)"              ");
+                    OLED_ShowString(0, 6, (u8*)"Forward         ");
                 }
                 break;
 
@@ -123,8 +124,7 @@ int main(void)
                 {
                     motor_set_speed(MOTOR1, -current_speed);
                     motor_set_speed(MOTOR2, -current_speed);
-                    OLED_ShowString(0, 2, (u8*)"Reverse        ");
-                    OLED_ShowString(0, 4, (u8*)"              ");
+                    OLED_ShowString(0, 6, (u8*)"Reverse         ");
                 }
                 break;
 
@@ -139,8 +139,7 @@ int main(void)
                 {
                     motor_set_speed(MOTOR1, current_speed);
                     motor_set_speed(MOTOR2, -current_speed);
-                    OLED_ShowString(0, 2, (u8*)"Spin Left      ");
-                    OLED_ShowString(0, 4, (u8*)"              ");
+                    OLED_ShowString(0, 6, (u8*)"Spin Left       ");
                 }
                 break;
 
@@ -155,31 +154,29 @@ int main(void)
                 {
                     motor_set_speed(MOTOR1, -current_speed);
                     motor_set_speed(MOTOR2, current_speed);
-                    OLED_ShowString(0, 2, (u8*)"Spin Right     ");
-                    OLED_ShowString(0, 4, (u8*)"              ");
+                    OLED_ShowString(0, 6, (u8*)"Spin Right      ");
                 }
                 break;
 
-            case '5':   /* 停止 / 循迹重置 PID */
+            case '5':   /* 停止 / 循迹停止 */
                 if (line_follow_active)
                 {
-                    line_follow_reset_pid();
+                    motor_set_speed(MOTOR1, 0);
+                    motor_set_speed(MOTOR2, 0);
                     show_pid_params = true;
                 }
                 else
                 {
                     motor_set_speed(MOTOR1, 0);
                     motor_set_speed(MOTOR2, 0);
-                    OLED_ShowString(0, 2, (u8*)"Stop           ");
-                    OLED_ShowString(0, 4, (u8*)"              ");
+                    OLED_ShowString(0, 6, (u8*)"Stop            ");
                 }
                 break;
 
             case '0':   /* 紧急停止 */
                 motor_set_speed(MOTOR1, 0);
                 motor_set_speed(MOTOR2, 0);
-                OLED_ShowString(0, 2, (u8*)"Emergency Stop!");
-                OLED_ShowString(0, 4, (u8*)"Emergency Stop!");
+                OLED_ShowString(0, 6, (u8*)"Emergency Stop! ");
                 break;
 
             case '7':   /* 循迹 SPD-- */
@@ -198,6 +195,7 @@ int main(void)
 
             case '*':   /* 返回主菜单 */
                 line_follow_active = false;
+                show_pid_params = false;
                 show_main_menu(current_speed);
                 break;
 
@@ -219,20 +217,20 @@ int main(void)
                         OLED_ShowString(0, 0, (u8*)buf);
                         snprintf(buf, sizeof(buf), "3:%4d 4:%4d   ",
                                  gray_val[2], gray_val[3]);
-                        OLED_ShowString(0, 2, (u8*)buf);
+                        OLED_ShowString(0, 1, (u8*)buf);
                         snprintf(buf, sizeof(buf), "5:%4d 6:%4d   ",
                                  gray_val[4], gray_val[5]);
-                        OLED_ShowString(0, 4, (u8*)buf);
+                        OLED_ShowString(0, 2, (u8*)buf);
                         snprintf(buf, sizeof(buf), "7:%4d 8:%4d   ",
                                  gray_val[6], gray_val[7]);
-                        OLED_ShowString(0, 6, (u8*)buf);
+                        OLED_ShowString(0, 3, (u8*)buf);
+                        OLED_ShowString(0, 5, (u8*)"A:Retry *:Back  ");
                     }
                     else
                     {
-                        OLED_ShowString(0, 0, (u8*)"Gray Sensor Err");
-                        OLED_ShowString(0, 2, (u8*)(ret == -1 ? "Timeout!        " : "Frame Err!      "));
-                        OLED_ShowString(0, 4, (u8*)"A:Retry  *:Back ");
-                        OLED_ShowString(0, 6, (u8*)"                ");
+                        OLED_ShowString(0, 0, (u8*)"Gray Sensor Err ");
+                        OLED_ShowString(0, 1, (u8*)(ret == -1 ? "Timeout!        " : "Frame Err!      "));
+                        OLED_ShowString(0, 3, (u8*)"A:Retry  *:Back ");
                     }
                 }
                 break;
@@ -244,10 +242,11 @@ int main(void)
                 {
                     show_pid_params = false;
                     line_follow_init();
-                    OLED_ShowString(0, 0, (u8*)"LineFollow ON  ");
-                    OLED_ShowString(0, 2, (u8*)"Pos:  0.0      ");
-                    OLED_ShowString(0, 4, (u8*)"L: 500 R: 500  ");
-                    OLED_ShowString(0, 6, (u8*)"B:Exit *:Menu  ");
+                    OLED_ShowString(0, 0, (u8*)"-- LineFollow --");
+                    OLED_ShowString(0, 1, (u8*)"Pos:  0.0      ");
+                    OLED_ShowString(0, 2, (u8*)"L:+500 R:+500  ");
+                    OLED_ShowString(0, 3, (u8*)"B:Exit *:Back  ");
+                    OLED_ShowString(0, 4, (u8*)"A:PID Mode     ");
                     follow_cnt = 0;
                 }
                 else
@@ -289,16 +288,21 @@ int main(void)
                     if (show_pid_params)
                     {
                         /* PID 参数显示模式 */
-                        OLED_ShowString(0, 0, (u8*)"LF PID Tune    ");
-                        snprintf(buf, sizeof(buf), "KP:%3d KI:%3d  ",
-                                 line_follow_get_kp(),
+                        OLED_ShowString(0, 0, (u8*)"-- PID Tune ----");
+                        snprintf(buf, sizeof(buf), "KP: %-4d        ",
+                                 line_follow_get_kp());
+                        OLED_ShowString(0, 1, (u8*)buf);
+                        snprintf(buf, sizeof(buf), "KI: %-4d        ",
                                  line_follow_get_ki());
                         OLED_ShowString(0, 2, (u8*)buf);
-                        snprintf(buf, sizeof(buf), "KD:%3d SPD:%3d ",
-                                 line_follow_get_kd(),
+                        snprintf(buf, sizeof(buf), "KD: %-4d        ",
+                                 line_follow_get_kd());
+                        OLED_ShowString(0, 3, (u8*)buf);
+                        snprintf(buf, sizeof(buf), "SPD: %-4d       ",
                                  line_follow_get_base_speed());
                         OLED_ShowString(0, 4, (u8*)buf);
-                        OLED_ShowString(0, 6, (u8*)"B:Exit *:Menu A:N");
+                        OLED_ShowString(0, 5, (u8*)"B:Exit *:Back  ");
+                        OLED_ShowString(0, 6, (u8*)"A:Normal Mode  ");
                     }
                     else
                     {
@@ -312,13 +316,14 @@ int main(void)
                         }
                         pos = (tw > 0.1f) ? (ws / tw) : 3.5f;
 
-                        OLED_ShowString(0, 0, (u8*)"LineFollow ON  ");
-                        snprintf(buf, sizeof(buf), "Pos:%5.1f      ", (double)pos);
-                        OLED_ShowString(0, 2, (u8*)buf);
-                        snprintf(buf, sizeof(buf), "L:%4d R:%4d    ",
+                        OLED_ShowString(0, 0, (u8*)"-- LineFollow --");
+                        snprintf(buf, sizeof(buf), "Pos: %5.1f      ", (double)pos);
+                        OLED_ShowString(0, 1, (u8*)buf);
+                        snprintf(buf, sizeof(buf), "L:%+4d R:%+4d  ",
                                  left_spd, right_spd);
-                        OLED_ShowString(0, 4, (u8*)buf);
-                        OLED_ShowString(0, 6, (u8*)"B:Exit *:Menu  ");
+                        OLED_ShowString(0, 2, (u8*)buf);
+                        OLED_ShowString(0, 3, (u8*)"B:Exit *:Back  ");
+                        OLED_ShowString(0, 4, (u8*)"A:PID Mode     ");
                     }
                 }
             }
@@ -335,9 +340,13 @@ int main(void)
 static void show_main_menu(int speed)
 {
     char buf[17];
-    snprintf(buf, sizeof(buf), "Speed:%3d      ", speed);
+    snprintf(buf, sizeof(buf), "Speed: %-4d     ", speed);
     OLED_ShowString(0, 0, (u8*)buf);
-    OLED_ShowString(0, 2, (u8*)"2:Up 8:Dn 4:L 6:R");
-    OLED_ShowString(0, 4, (u8*)"1:- 3:+ #:Rst   ");
-    OLED_ShowString(0, 6, (u8*)"5:Stop 0:Est A:G");
+    OLED_ShowString(0, 1, (u8*)"2:Up 8:Dn 4:L 6:R");
+    OLED_ShowString(0, 2, (u8*)"1:-Spd 3:+Spd   ");
+    OLED_ShowString(0, 3, (u8*)"#:Rst  5:Stop   ");
+    OLED_ShowString(0, 4, (u8*)"0:Estp A:Gray   ");
+    OLED_ShowString(0, 5, (u8*)"B:LF   *:Back   ");
+    OLED_ShowString(0, 6, (u8*)"                ");
+    OLED_ShowString(0, 7, (u8*)"                ");
 }

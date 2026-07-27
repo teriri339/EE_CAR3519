@@ -50,7 +50,7 @@
 // 0:4�ߴ���ģʽ
 // 1:����8080ģʽ
 
-#define SIZE 16
+#define SIZE 12
 #define XLevelL 0x02
 #define XLevelH 0x10
 #define Max_Column 128
