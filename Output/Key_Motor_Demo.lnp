@@ -5,6 +5,7 @@
 "..\output\motor_ctrl.o"
 "..\output\gray_sensor.o"
 "..\output\line_follow.o"
+"..\output\imu_mpu9250.o"
 "..\output\main.o"
 "..\output\ti_msp_dl_config.o"
 "..\output\dl_adc12.o"

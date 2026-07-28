@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3519__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\BSP;..\Source;..\Source\third_party\CMSIS\Core\Include;..\User;..\BSP\delay;..\BSP\OLED</IncludePath>
+              <IncludePath>..\BSP;..\BSP\IMU;..\Source;..\Source\third_party\CMSIS\Core\Include;..\User;..\BSP\delay;..\BSP\OLED</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -458,6 +458,16 @@
               <FileName>line_follow.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\BSP\LineFollow\line_follow.h</FilePath>
+            </File>
+            <File>
+              <FileName>imu_mpu9250.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\IMU\imu_mpu9250.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu_mpu9250.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\IMU\imu_mpu9250.h</FilePath>
             </File>
           </Files>
         </Group>

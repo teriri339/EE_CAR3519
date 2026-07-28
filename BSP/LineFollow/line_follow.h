@@ -15,9 +15,13 @@
 void line_follow_init(void);
 
 /*
- * PID 控制周期: 输入8路灰度值，输出左右电机速度 (-1000~1000)
+ * PID 控制周期: 输入8路灰度值 + 陀螺Z轴角速度，输出左右电机速度
+ *   gray_values: 8路灰度 ADC 值
+ *   gyro_z:      陀螺 Z 轴原始值 (131 LSB/°/s), 无陀螺传 0
+ *   left_speed, right_speed: 输出电机速度 (-1000~1000)
  */
 void line_follow_update(uint16_t *gray_values,
+                         int16_t gyro_z,
                          int16_t *left_speed,
                          int16_t *right_speed);
 

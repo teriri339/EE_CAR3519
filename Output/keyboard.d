@@ -76,4 +76,5 @@
   D:\EE\ARM\ARMCLANG\include\stdio.h D:\EE\ARM\ARMCLANG\include\string.h \
   ..\User\ti_msp_dl_config.h ..\BSP\delay\delay.h \
   ..\BSP\OLED\spi0_oled.h ..\BSP\MotorCtrl\motor_ctrl.h \
-  ..\BSP\GraySensor\gray_sensor.h ..\BSP\LineFollow\line_follow.h
+  ..\BSP\GraySensor\gray_sensor.h ..\BSP\LineFollow\line_follow.h \
+  ..\BSP\IMU\imu_mpu9250.h

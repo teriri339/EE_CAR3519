@@ -77,4 +77,4 @@
   ..\User\ti_msp_dl_config.h ..\BSP\delay\delay.h \
   ..\BSP\KeyBoard\keyboard.h ..\BSP\MotorCtrl\motor_ctrl.h \
   ..\BSP\GraySensor\gray_sensor.h ..\BSP\LineFollow\line_follow.h \
-  ..\BSP\OLED\spi0_oledfont.h
+  ..\BSP\IMU\imu_mpu9250.h ..\BSP\OLED\spi0_oledfont.h

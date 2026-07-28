@@ -20,7 +20,8 @@
  * TIMA0 PWM 模式: Down-Counting Edge-Aligned
  *   计数器: LOAD(999) → ... → CC → ... → 1 → 0 → 重载
  *   输出:   CNT==0 时拉 HIGH, CNT==CC 时拉 LOW
- *   占空比 = (period - CC) / period = (1000 - CC) / 1000
+ *   占空比 = (period - CC) / period = (1000
+ 0 - CC) / 1000
  *
  *   CC=0   → 100% duty (全速)     CC=999 → ~0% duty (停止)
  *   CC=500 → 50% duty             CC=1000→ 永不匹配 → 100% (危险!)

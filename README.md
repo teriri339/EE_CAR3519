@@ -33,6 +33,9 @@ Key_Motor_Demo/
 │   ├── LineFollow/
 │   │   ├── line_follow.h         # PID 参数宏与接口
 │   │   └── line_follow.c         # 加权位置 + PID 差速循迹
+│   ├── IMU/
+│   │   ├── imu_mpu9250.h         # MPU9250 陀螺仪接口
+│   │   └── imu_mpu9250.c         # 软件 I2C + 陀螺 Z 轴读取
 │   └── OLED/
 │       ├── spi0_oled.h           # OLED 宏 (SIZE=12, 6×8小字体)
 │       ├── spi0_oled.c           # SH1106 128×64 驱动
@@ -83,6 +86,15 @@ TIMA0: 1MHz 时钟, period=1000 → 1kHz PWM
 | RX | PB11 | |
 
 协议：请求 `A5 05` (2字节)，响应 `5A 05 00 <sample_cnt(1B)> <8×uint16小端>` (20字节)。灰度值 0~4095，白色高、黑色低。
+
+### MPU9250 陀螺仪 (软件 I2C, GPIO)
+
+| 信号 | MCU引脚 | 说明 |
+|------|---------|------|
+| SDA | PA0 | 外接 4.7kΩ 上拉到 3.3V |
+| SCL | PA1 | 外接 4.7kΩ 上拉到 3.3V |
+
+I2C 地址: 0x68 (AD0=GND), 软件模拟 ~100kHz。陀螺 Z 轴用于循迹 PID 的 D 项替代位置微分。
 
 ### OLED SH1106 128×64 (SPI0)
 
@@ -200,6 +212,12 @@ CMSIS-DAP 已预配置，编译后 F8 下载。
 | 2026-07-27 | 去抖导致按键错乱 (5→前进,8→停止) | 回退键盘去抖，保留原始单次扫描 |
 | 2026-07-27 | 5全速前进/8停止(PWM极性bug) | CC=0 在 ACOND 下输出 ~100% 而非 0%；停止/反转改用 CC=period(1000) |
 | 2026-07-27 | speed越大越慢 + 按8刹车（PWM Down-Counting bug） | PWM 是 Down-Counting Edge-Aligned，占空比=(period-CC)/period；前进 CC=period-speed，停止/反转 CC=999（≈0%），CC=1000 导致永不匹配→IN1=1→刹车 |
+| 2026-07-27 | 左右转方向反了 | apply_direction 中 DIR_LEFT/DIR_RIGHT 的 MOTOR1/MOTOR2 分配互换 |
+| 2026-07-27 | 循迹校正方向反了 (KP必须为负才正确) | 重写 line_follow.c: error=center-position 替代 error=position-center; 全部整数运算; 添加 SENSOR_DIR_INVERT 宏兼容不同传感器安装方向 |
+| 2026-07-27 | 上线后不跟踪 (阈值 2000 高于白底最低值) | BLACK_TH 从 2000 → 1200 |
+| 2026-07-27 | 添加 MPU9250 陀螺仪 | 新增 BSP/IMU/ 软件 I2C 驱动; 循迹 D 项改用陀螺 Z 轴角速度 (fallback 位置微分); GYRO_D_SCALE=64 |
+| 2026-07-27 | IMU 编译错误 (DL_GPIO_enableInput 不存在) | SDA_REL 改用 DL_GPIO_disableOutput (直接操作 DOECLR31_0); I2C 速度降至 100kHz 提高兼容性; 陀螺诊断界面增加 IMU NOT FOUND 状态提示 |
+| 2026-07-27 | IMU 源文件未加入编译 | 在 .uvprojx 中 BSP 组新增 imu_mpu9250.c/.h; IncludePath 新增 ..\BSP\IMU |
 
 ---
 

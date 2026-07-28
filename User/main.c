@@ -27,12 +27,12 @@ static void apply_direction(Direction_t dir, int speed)
         motor_set_speed(MOTOR2, -speed);
         break;
     case DIR_LEFT:
-        motor_set_speed(MOTOR1, speed);
-        motor_set_speed(MOTOR2, -speed);
-        break;
-    case DIR_RIGHT:
         motor_set_speed(MOTOR1, -speed);
         motor_set_speed(MOTOR2, speed);
+        break;
+    case DIR_RIGHT:
+        motor_set_speed(MOTOR1, speed);
+        motor_set_speed(MOTOR2, -speed);
         break;
     case DIR_STOP:
     default:
@@ -52,6 +52,8 @@ int main(void)
     static Direction_t current_dir = DIR_STOP;
     static bool line_follow_active = false;
     static bool show_pid_params = false;
+    static bool show_gyro_debug = false;
+    static bool imu_ok = false;
     static uint16_t follow_cnt = 0;
 
     OLED_Init();
@@ -60,6 +62,7 @@ int main(void)
     keyboard_init();
     motor_ctrl_init();
     gray_sensor_init();
+    imu_ok = (imu_init() == 0);   /* MPU9250 陀螺仪, 记录结果 */
 
     /* 显示主菜单 */
     show_main_menu(current_speed);
@@ -238,43 +241,55 @@ int main(void)
             case '*':   /* 返回主菜单 */
                 line_follow_active = false;
                 show_pid_params = false;
+                show_gyro_debug = false;
                 current_dir = DIR_STOP;
                 apply_direction(DIR_STOP, 0);
                 show_main_menu(current_speed);
                 break;
 
-            case 'A':   /* 读取灰度 / 循迹切换 PID 显示 */
+            case 'A':   /* 灰度 → 陀螺 → 循环 / 循迹切换 PID 显示 */
                 if (line_follow_active)
                 {
                     show_pid_params = !show_pid_params;
                 }
                 else
                 {
-                    uint16_t gray_val[8];
-                    char buf[17];
-                    int ret = gray_sensor_read_all(gray_val);
-
-                    if (ret >= 0)
+                    show_gyro_debug = !show_gyro_debug;
+                    if (show_gyro_debug)
                     {
-                        snprintf(buf, sizeof(buf), "1:%4d 2:%4d   ",
-                                 gray_val[0], gray_val[1]);
-                        OLED_ShowString(0, 0, (u8*)buf);
-                        snprintf(buf, sizeof(buf), "3:%4d 4:%4d   ",
-                                 gray_val[2], gray_val[3]);
-                        OLED_ShowString(0, 1, (u8*)buf);
-                        snprintf(buf, sizeof(buf), "5:%4d 6:%4d   ",
-                                 gray_val[4], gray_val[5]);
-                        OLED_ShowString(0, 2, (u8*)buf);
-                        snprintf(buf, sizeof(buf), "7:%4d 8:%4d   ",
-                                 gray_val[6], gray_val[7]);
-                        OLED_ShowString(0, 3, (u8*)buf);
-                        OLED_ShowString(0, 5, (u8*)"A:Retry *:Back  ");
+                        /* 陀螺仪诊断 */
+                        OLED_ShowString(0, 0, (u8*)"-- Gyro Diag ---");
+                        OLED_ShowString(0, 7, (u8*)"A:Gray  *:Back  ");
                     }
                     else
                     {
-                        OLED_ShowString(0, 0, (u8*)"Gray Sensor Err ");
-                        OLED_ShowString(0, 1, (u8*)(ret == -1 ? "Timeout!        " : "Frame Err!      "));
-                        OLED_ShowString(0, 3, (u8*)"A:Retry  *:Back ");
+                        /* 灰度传感器 */
+                        uint16_t gray_val[8];
+                        char buf[17];
+                        int ret = gray_sensor_read_all(gray_val);
+
+                        if (ret >= 0)
+                        {
+                            snprintf(buf, sizeof(buf), "1:%4d 2:%4d   ",
+                                     gray_val[0], gray_val[1]);
+                            OLED_ShowString(0, 0, (u8*)buf);
+                            snprintf(buf, sizeof(buf), "3:%4d 4:%4d   ",
+                                     gray_val[2], gray_val[3]);
+                            OLED_ShowString(0, 1, (u8*)buf);
+                            snprintf(buf, sizeof(buf), "5:%4d 6:%4d   ",
+                                     gray_val[4], gray_val[5]);
+                            OLED_ShowString(0, 2, (u8*)buf);
+                            snprintf(buf, sizeof(buf), "7:%4d 8:%4d   ",
+                                     gray_val[6], gray_val[7]);
+                            OLED_ShowString(0, 3, (u8*)buf);
+                            OLED_ShowString(0, 7, (u8*)"A:Gyro  *:Back  ");
+                        }
+                        else
+                        {
+                            OLED_ShowString(0, 0, (u8*)"Gray Sensor Err ");
+                            OLED_ShowString(0, 1, (u8*)(ret == -1 ? "Timeout!        " : "Frame Err!      "));
+                            OLED_ShowString(0, 3, (u8*)"A:Retry  *:Back ");
+                        }
                     }
                 }
                 break;
@@ -320,7 +335,8 @@ int main(void)
 
             if (gray_sensor_read_all(gray_val) >= 0)
             {
-                line_follow_update(gray_val, &left_spd, &right_spd);
+                int16_t gyro_z = imu_get_gyro_z();
+                line_follow_update(gray_val, gyro_z, &left_spd, &right_spd);
                 motor_set_speed(MOTOR1, left_spd);
                 motor_set_speed(MOTOR2, right_spd);
 
@@ -372,6 +388,40 @@ int main(void)
                 }
             }
             delay_ms(10);
+        }
+        else if (show_gyro_debug)
+        {
+            /* 陀螺仪诊断实时刷新 */
+            char buf[17];
+
+            if (!imu_ok)
+            {
+                OLED_ShowString(0, 1, (u8*)"IMU NOT FOUND!  ");
+                OLED_ShowString(0, 2, (u8*)"Check SDA/SCL   ");
+                OLED_ShowString(0, 3, (u8*)"wiring & 3.3V   ");
+                OLED_ShowString(0, 7, (u8*)"A:Gray  *:Back  ");
+                delay_ms(200);
+                continue;
+            }
+
+            int16_t gyro_z = imu_get_gyro_z();
+            int16_t dps_approx = gyro_z * 10 / 131;  /* °/s ×10 */
+
+            snprintf(buf, sizeof(buf), "Z raw: %-6d   ", gyro_z);
+            OLED_ShowString(0, 1, (u8*)buf);
+
+            snprintf(buf, sizeof(buf), "dps : %-4d.%1d    ",
+                     dps_approx / 10, (dps_approx < 0 ? -dps_approx : dps_approx) % 10);
+            OLED_ShowString(0, 2, (u8*)buf);
+
+            if (gyro_z > 1000)
+                OLED_ShowString(0, 4, (u8*)"<<< Turn LEFT   ");
+            else if (gyro_z < -1000)
+                OLED_ShowString(0, 4, (u8*)">>> Turn RIGHT  ");
+            else
+                OLED_ShowString(0, 4, (u8*)"---- Straight ---");
+
+            delay_ms(50);
         }
         else
         {

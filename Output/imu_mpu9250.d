@@ -1,6 +1,6 @@
-../output/motor_ctrl.o: ..\BSP\MotorCtrl\motor_ctrl.c \
-  ..\BSP\MotorCtrl\motor_ctrl.h ..\BSP\bsp.h \
-  ..\Source\ti\devices\msp\msp.h ..\Source\ti\devices\DeviceFamily.h \
+../output/imu_mpu9250.o: ..\BSP\IMU\imu_mpu9250.c \
+  ..\BSP\IMU\imu_mpu9250.h ..\BSP\bsp.h ..\Source\ti\devices\msp\msp.h \
+  ..\Source\ti\devices\DeviceFamily.h \
   ..\Source\ti\devices\msp\m0p\mspm0g351x.h \
   D:\EE\ARM\ARMCLANG\include\stdint.h \
   D:\EE\ARM\ARMCLANG\include\stdbool.h \
@@ -76,5 +76,5 @@
   D:\EE\ARM\ARMCLANG\include\stdio.h D:\EE\ARM\ARMCLANG\include\string.h \
   ..\User\ti_msp_dl_config.h ..\BSP\delay\delay.h \
   ..\BSP\OLED\spi0_oled.h ..\BSP\KeyBoard\keyboard.h \
-  ..\BSP\GraySensor\gray_sensor.h ..\BSP\LineFollow\line_follow.h \
-  ..\BSP\IMU\imu_mpu9250.h
+  ..\BSP\MotorCtrl\motor_ctrl.h ..\BSP\GraySensor\gray_sensor.h \
+  ..\BSP\LineFollow\line_follow.h
