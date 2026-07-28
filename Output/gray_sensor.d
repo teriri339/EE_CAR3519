@@ -2,15 +2,7 @@
   ..\BSP\GraySensor\gray_sensor.h ..\BSP\bsp.h \
   ..\Source\ti\devices\msp\msp.h ..\Source\ti\devices\DeviceFamily.h \
   ..\Source\ti\devices\msp\m0p\mspm0g351x.h \
-  D:\EE\ARM\ARMCLANG\include\stdint.h \
-  D:\EE\ARM\ARMCLANG\include\stdbool.h \
   ..\Source\third_party\CMSIS\Core\Include\core_cm0plus.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\cmsis_version.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\cmsis_compiler.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\cmsis_armclang.h \
-  D:\EE\ARM\ARMCLANG\include\arm_compat.h \
-  D:\EE\ARM\ARMCLANG\include\arm_acle.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\mpu_armv7.h \
   ..\Source\ti\devices\msp\peripherals\hw_adc12.h \
   ..\Source\ti\devices\msp\peripherals\hw_aesadv.h \
   ..\Source\ti\devices\msp\peripherals\hw_comp.h \
@@ -39,13 +31,13 @@
   ..\Source\ti\devices\msp\peripherals\m0p\hw_sysctl.h \
   ..\Source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0gx51x.h \
   ..\Source\ti\driverlib\driverlib.h ..\Source\ti\driverlib\dl_adc12.h \
-  D:\EE\ARM\ARMCLANG\include\math.h ..\Source\ti\driverlib\dl_common.h \
+  ..\Source\ti\driverlib\dl_common.h \
   ..\Source\ti\driverlib\m0p\dl_factoryregion.h \
   ..\Source\ti\driverlib\m0p\dl_core.h ..\Source\ti\driverlib\dl_aes.h \
-  D:\EE\ARM\ARMCLANG\include\stddef.h ..\Source\ti\driverlib\dl_aesadv.h \
-  ..\Source\ti\driverlib\dl_comp.h ..\Source\ti\driverlib\dl_crc.h \
-  ..\Source\ti\driverlib\dl_crcp.h ..\Source\ti\driverlib\dl_dac12.h \
-  ..\Source\ti\driverlib\dl_dma.h ..\Source\ti\driverlib\dl_flashctl.h \
+  ..\Source\ti\driverlib\dl_aesadv.h ..\Source\ti\driverlib\dl_comp.h \
+  ..\Source\ti\driverlib\dl_crc.h ..\Source\ti\driverlib\dl_crcp.h \
+  ..\Source\ti\driverlib\dl_dac12.h ..\Source\ti\driverlib\dl_dma.h \
+  ..\Source\ti\driverlib\dl_flashctl.h \
   ..\Source\ti\driverlib\m0p\dl_sysctl.h \
   ..\Source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0gx51x.h \
   ..\Source\ti\driverlib\dl_gpamp.h ..\Source\ti\driverlib\dl_gpio.h \
@@ -72,8 +64,8 @@
   ..\Source\ti\driverlib\dl_unicommuart.h \
   ..\Source\ti\driverlib\dl_vref.h ..\Source\ti\driverlib\dl_wwdt.h \
   ..\Source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\Source\ti\driverlib\m0p\dl_systick.h \
-  D:\EE\ARM\ARMCLANG\include\stdio.h D:\EE\ARM\ARMCLANG\include\string.h \
-  ..\User\ti_msp_dl_config.h ..\BSP\delay\delay.h \
-  ..\BSP\OLED\spi0_oled.h ..\BSP\KeyBoard\keyboard.h \
-  ..\BSP\MotorCtrl\motor_ctrl.h ..\BSP\LineFollow\line_follow.h
+  ..\Source\ti\driverlib\m0p\dl_systick.h ..\User\ti_msp_dl_config.h \
+  ..\BSP\delay\delay.h ..\BSP\OLED\spi0_oled.h \
+  ..\BSP\KeyBoard\keyboard.h ..\BSP\MotorCtrl\motor_ctrl.h \
+  ..\BSP\LineFollow\line_follow.h ..\BSP\IMU\imu_mpu9250.h \
+  ..\BSP\Course\course.h

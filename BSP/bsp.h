@@ -21,6 +21,8 @@
 #include "MotorCtrl/motor_ctrl.h"
 #include "GraySensor/gray_sensor.h"
 #include "LineFollow/line_follow.h"
+#include "IMU/imu_mpu9250.h"
+#include "Course/course.h"
 /*******************************************/
 
 #endif

@@ -10,7 +10,7 @@
       <TargetName>Key_Motor_Demo</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6210000::V6.21::ARMCLANG</pCCUsed>
+      <pCCUsed>6240000::V6.24::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3519__</Define>
               <Undefine></Undefine>
-              <IncludePath>..\BSP;..\Source;..\Source\third_party\CMSIS\Core\Include;..\User;..\BSP\delay;..\BSP\OLED</IncludePath>
+              <IncludePath>..\BSP;..\BSP\IMU;..\BSP\Course;..\Source;..\Source\third_party\CMSIS\Core\Include;..\User;..\BSP\delay;..\BSP\OLED</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -458,6 +458,26 @@
               <FileName>line_follow.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\BSP\LineFollow\line_follow.h</FilePath>
+            </File>
+            <File>
+              <FileName>imu_mpu9250.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\IMU\imu_mpu9250.c</FilePath>
+            </File>
+            <File>
+              <FileName>imu_mpu9250.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\IMU\imu_mpu9250.h</FilePath>
+            </File>
+            <File>
+              <FileName>course.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\Course\course.c</FilePath>
+            </File>
+            <File>
+              <FileName>course.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\Course\course.h</FilePath>
             </File>
           </Files>
         </Group>

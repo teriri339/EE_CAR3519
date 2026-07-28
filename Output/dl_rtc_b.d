@@ -1,17 +1,9 @@
 ../output/dl_rtc_b.o: ..\Source\ti\driverlib\dl_rtc_b.c \
   ..\Source\ti\driverlib\dl_rtc_b.h \
-  ..\Source\ti\driverlib\dl_rtc_common.h \
-  D:\EE\ARM\ARMCLANG\include\stdbool.h \
-  D:\EE\ARM\ARMCLANG\include\stdint.h ..\Source\ti\devices\msp\msp.h \
+  ..\Source\ti\driverlib\dl_rtc_common.h ..\Source\ti\devices\msp\msp.h \
   ..\Source\ti\devices\DeviceFamily.h \
   ..\Source\ti\devices\msp\m0p\mspm0g351x.h \
   ..\Source\third_party\CMSIS\Core\Include\core_cm0plus.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\cmsis_version.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\cmsis_compiler.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\cmsis_armclang.h \
-  D:\EE\ARM\ARMCLANG\include\arm_compat.h \
-  D:\EE\ARM\ARMCLANG\include\arm_acle.h \
-  D:\desktop\3519car\Key_Motor_Demo\Source\third_party\CMSIS\Core\Include\mpu_armv7.h \
   ..\Source\ti\devices\msp\peripherals\hw_adc12.h \
   ..\Source\ti\devices\msp\peripherals\hw_aesadv.h \
   ..\Source\ti\devices\msp\peripherals\hw_comp.h \

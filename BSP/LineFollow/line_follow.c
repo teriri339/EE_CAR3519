@@ -4,20 +4,16 @@
 /*
  * 简单 PID 黑线循迹
  *
- * 背景: 白色 → ADC 值大 (~3000~4095)，占空比高
- * 黑线: 黑色 → ADC 值小 (~0~1500)，占空比低
+ * Background: white gives a high ADC value; black gives a low ADC value.
  *
- * 算法:
- *   1. 二值化: ADC < BLACK_TH → 黑线(1); 否则 → 白色(0)
- *   2. 加权平均求黑线位置: pos = Σ(bit_i × i) / Σ(bit_i)
- *   3. 误差: error = pos - 3.5 (中心)
- *   4. PID 输出修正电机差速
+ * Algorithm:
+ *   1. Convert every channel to continuous darkness: frame_max - sample
+ *   2. Sensor weights from left to right: -7, -5, -3, -1, +1, +3, +5, +7
+ *   3. Error is the darkness-weighted average sensor position
+ *   4. Positional PID with an explicit 10 ms sample period
  */
 
-/* ========== 可调参数 ========== */
-#define BLACK_TH        2000    /* ADC 低于此值视为黑线 */
 #define INTEGRAL_LIMIT  100     /* 积分限幅 */
-/* ============================= */
 
 /* PID 运行时参数（可通过按键实时调节） */
 static int g_kp          = LF_DEFAULT_KP;
@@ -25,60 +21,94 @@ static int g_ki          = LF_DEFAULT_KI;
 static int g_kd          = LF_DEFAULT_KD;
 static int g_base_speed  = LF_DEFAULT_SPD;
 
+static const int8_t sensor_weights[LF_SENSOR_COUNT] = {
+    -7, -5, -3, -1, 1, 3, 5, 7
+};
+
 static float integral;
 static float last_error;
+static float tracking_error;
+static uint16_t tracking_contrast;
 static uint8_t initialized;
+static uint8_t has_last_error;
 
 void line_follow_init(void)
 {
     integral    = 0.0f;
     last_error  = 0.0f;
+    tracking_error = 0.0f;
+    tracking_contrast = 0;
     initialized = 1;
+    has_last_error = 0;
 }
 
-void line_follow_update(uint16_t *gray_values,
-                         int16_t *left_speed,
-                         int16_t *right_speed)
+bool line_follow_update(uint16_t *gray_values,
+                        int16_t *left_speed,
+                        int16_t *right_speed)
 {
+    uint16_t min_value = 0xFFFFU;
+    uint16_t max_value = 0U;
     float weighted_sum = 0.0f;
-    float total_weight = 0.0f;
+    uint32_t darkness_sum = 0U;
     int i;
 
     if (!initialized)
         line_follow_init();
 
-    /* 1. 二值化 + 加权位置计算 (sensor 1=index0=最左) */
     for (i = 0; i < LF_SENSOR_COUNT; i++)
     {
-        uint8_t black = (gray_values[i] < BLACK_TH) ? 1 : 0;
-        weighted_sum += (float)(black * i);
-        total_weight += (float)black;
+        if (gray_values[i] < min_value) min_value = gray_values[i];
+        if (gray_values[i] > max_value) max_value = gray_values[i];
     }
 
-    float position;
-    if (total_weight < 0.1f)
+    tracking_contrast = max_value - min_value;
+    if (tracking_contrast < LF_MIN_CONTRAST)
     {
-        /* 全白（没压到黑线）→ 默认直行 */
-        position = LF_CENTER_POS;
-    }
-    else if (total_weight > 7.9f)
-    {
-        /* 全黑（所有传感器都在黑线上）→ 直行 */
-        position = LF_CENTER_POS;
-    }
-    else
-    {
-        position = weighted_sum / total_weight;
+        integral = 0.0f;
+        last_error = 0.0f;
+        tracking_error = 0.0f;
+        has_last_error = 0;
+        *left_speed = 0;
+        *right_speed = 0;
+        return false;
     }
 
-    /* 2. PID 计算 */
-    float error = position - LF_CENTER_POS;     /* 左负右正 */
+    /* Sensor 0 is far left. Darker channels contribute more strongly. */
+    for (i = 0; i < LF_SENSOR_COUNT; i++)
+    {
+        uint16_t darkness = max_value - gray_values[i];
+        weighted_sum += (float)darkness * (float)sensor_weights[i];
+        darkness_sum += darkness;
+    }
 
-    integral += error;
+    if (darkness_sum == 0U)
+    {
+        integral = 0.0f;
+        last_error = 0.0f;
+        tracking_error = 0.0f;
+        has_last_error = 0;
+        *left_speed = 0;
+        *right_speed = 0;
+        return false;
+    }
+
+    float error = weighted_sum / (float)darkness_sum;
+    tracking_error = error;
+
+    /* 2. Positional PID. */
+    integral += error * LF_CONTROL_PERIOD_S;
     if (integral >  INTEGRAL_LIMIT) integral =  INTEGRAL_LIMIT;
     if (integral < -INTEGRAL_LIMIT) integral = -INTEGRAL_LIMIT;
 
-    float derivative = error - last_error;
+    float derivative = 0.0f;
+    if (has_last_error)
+    {
+        derivative = (error - last_error) / LF_CONTROL_PERIOD_S;
+    }
+    else
+    {
+        has_last_error = 1;
+    }
     last_error = error;
 
     float pid_output = g_kp * error + g_ki * integral + g_kd * derivative;
@@ -88,17 +118,19 @@ void line_follow_update(uint16_t *gray_values,
     if (pid_output < -g_base_speed) pid_output = -g_base_speed;
 
     /* 3. 差速控制
-     *    error > 0 (偏右) → pid_output > 0 → 左轮快、右轮慢 → 左转校正
-     *    error < 0 (偏左) → pid_output < 0 → 左轮慢、右轮快 → 右转校正
+     *    error < 0 (line on left)  -> left faster, right slower -> turn right
+     *    error > 0 (line on right) -> left slower, right faster -> turn left
      */
-    *left_speed  = (int16_t)(g_base_speed + pid_output);
-    *right_speed = (int16_t)(g_base_speed - pid_output);
+    *left_speed  = (int16_t)(g_base_speed - pid_output);
+    *right_speed = (int16_t)(g_base_speed + pid_output);
 
     /* 限幅到有效范围 -1000~1000 */
     if (*left_speed  >  1000) *left_speed  =  1000;
     if (*left_speed  < -1000) *left_speed  = -1000;
     if (*right_speed >  1000) *right_speed =  1000;
     if (*right_speed < -1000) *right_speed = -1000;
+
+    return true;
 }
 
 /* ========== PID 参数实时读写接口 ========== */
@@ -106,6 +138,8 @@ int line_follow_get_kp(void)         { return g_kp; }
 int line_follow_get_ki(void)         { return g_ki; }
 int line_follow_get_kd(void)         { return g_kd; }
 int line_follow_get_base_speed(void) { return g_base_speed; }
+float line_follow_get_error(void)    { return tracking_error; }
+uint16_t line_follow_get_contrast(void) { return tracking_contrast; }
 
 void line_follow_set_kp(int val)         { g_kp = val; }
 void line_follow_set_ki(int val)         { g_ki = val; }
