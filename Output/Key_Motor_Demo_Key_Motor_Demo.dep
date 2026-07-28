@@ -1,6 +1,6 @@
 Dependencies for Project 'Key_Motor_Demo', Target 'Key_Motor_Demo': (DO NOT MODIFY !)
 CompilerVersion: 6210000::V6.21::ARMCLANG
-F (..\BSP\bsp.h)(0x6A688362)()
+F (..\BSP\bsp.h)(0x6A6888E2)()
 F (..\BSP\delay\delay.c)(0x6A5F976D)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/delay.o -MD)
 I (..\Source\ti\devices\msp\msp.h_.\Source\ti\devices\DeviceFamily.h)(0x00000000)
 I (..\Source\ti\devices\msp\m0p\mspm0g351x.h)(0x6A5F977F)
@@ -159,7 +159,7 @@ I (..\BSP\GraySensor\gray_sensor.hP.\BSP\LineFollow\line_follow.h)(0x00000000)
 I (..\BSP\IMU\imu_mpu9250.he.\BSP\OLED\spi0_oledfont.h)(0x00000000)
 F (..\BSP\OLED\spi0_oled.h)(0x6A675DF5)()
 F (..\BSP\OLED\spi0_oledfont.h)(0x6A5F976D)()
-F (..\BSP\KeyBoard\keyboard.c)(0x6A687E14)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/keyboard.o -MD)
+F (..\BSP\KeyBoard\keyboard.c)(0x6A6888E2)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/keyboard.o -MD)
 I (..\BSP\KeyBoard\keyboard.h)(0x6A647547)
 I (..\Source\ti\devices\DeviceFamily.h)(0x6A5F977F)
 I (..\Source\ti\devices\msp\m0p\mspm0g351x.h)(0x6A5F977F)
@@ -238,7 +238,7 @@ I (D:\EE\ARM\ARMCLANG\include\stdio.hi:\EE\ARM\ARMCLANG\include\string.h)(0x0000
 I (..\User\ti_msp_dl_config.h\.\BSP\delay\delay.h)(0x00000000)
 I (..\BSP\OLED\spi0_oled.hg.\BSP\MotorCtrl\motor_ctrl.h)(0x00000000)
 I (..\BSP\GraySensor\gray_sensor.ho.\BSP\LineFollow\line_follow.h)(0x00000000)
-I (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)
+I (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)
 F (..\BSP\KeyBoard\keyboard.h)(0x6A647547)()
 F (..\BSP\MotorCtrl\motor_ctrl.c)(0x6A688071)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/motor_ctrl.o -MD)
 I (..\BSP\MotorCtrl\motor_ctrl.h)(0x6A65D87D)
@@ -319,7 +319,7 @@ I (D:\EE\ARM\ARMCLANG\include\stdio.hi:\EE\ARM\ARMCLANG\include\string.h)(0x0000
 I (..\User\ti_msp_dl_config.h\.\BSP\delay\delay.h)(0x00000000)
 I (..\BSP\OLED\spi0_oled.hg.\BSP\KeyBoard\keyboard.h)(0x00000000)
 I (..\BSP\GraySensor\gray_sensor.he.\BSP\LineFollow\line_follow.h)(0x00000000)
-I (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)
+I (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)
 F (..\BSP\MotorCtrl\motor_ctrl.h)(0x6A65D87D)()
 F (..\BSP\GraySensor\gray_sensor.c)(0x6A675DF5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/gray_sensor.o -MD)
 I (..\BSP\GraySensor\gray_sensor.h)(0x6A675DF5)
@@ -400,10 +400,10 @@ I (D:\EE\ARM\ARMCLANG\include\stdio.hi:\EE\ARM\ARMCLANG\include\string.h)(0x0000
 I (..\User\ti_msp_dl_config.h\.\BSP\delay\delay.h)(0x00000000)
 I (..\BSP\OLED\spi0_oled.hg.\BSP\KeyBoard\keyboard.h)(0x00000000)
 I (..\BSP\MotorCtrl\motor_ctrl.h\.\BSP\LineFollow\line_follow.h)(0x00000000)
-I (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)
+I (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)
 F (..\BSP\GraySensor\gray_sensor.h)(0x6A675DF5)()
-F (..\BSP\LineFollow\line_follow.c)(0x6A688348)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/line_follow.o -MD)
-I (..\BSP\LineFollow\line_follow.h)(0x6A688332)
+F (..\BSP\LineFollow\line_follow.c)(0x6A6888E2)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/line_follow.o -MD)
+I (..\BSP\LineFollow\line_follow.h)(0x6A6888E2)
 I (..\Source\ti\devices\msp\msp.hh.\Source\ti\devices\DeviceFamily.h)(0x00000000)
 I (..\Source\ti\devices\msp\m0p\mspm0g351x.h)(0x6A5F977F)
 I (D:\EE\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
@@ -481,10 +481,10 @@ I (D:\EE\ARM\ARMCLANG\include\stdio.hi:\EE\ARM\ARMCLANG\include\string.h)(0x0000
 I (..\User\ti_msp_dl_config.h\.\BSP\delay\delay.h)(0x00000000)
 I (..\BSP\OLED\spi0_oled.hg.\BSP\KeyBoard\keyboard.h)(0x00000000)
 I (..\BSP\MotorCtrl\motor_ctrl.h\.\BSP\GraySensor\gray_sensor.h)(0x00000000)
-I (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)
-F (..\BSP\LineFollow\line_follow.h)(0x6A688332)()
-F (..\BSP\IMU\imu_mpu9250.c)(0x6A688601)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/imu_mpu9250.o -MD)
-I (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)
+I (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)
+F (..\BSP\LineFollow\line_follow.h)(0x6A6888E2)()
+F (..\BSP\IMU\imu_mpu9250.c)(0x6A68A4C3)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/imu_mpu9250.o -MD)
+I (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)
 I (..\Source\ti\devices\DeviceFamily.h)(0x6A5F977F)
 I (..\Source\ti\devices\msp\m0p\mspm0g351x.h)(0x6A5F977F)
 I (D:\EE\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
@@ -562,10 +562,10 @@ I (D:\EE\ARM\ARMCLANG\include\stdio.hi:\EE\ARM\ARMCLANG\include\string.h)(0x0000
 I (..\User\ti_msp_dl_config.h\.\BSP\delay\delay.h)(0x00000000)
 I (..\BSP\OLED\spi0_oled.hg.\BSP\KeyBoard\keyboard.h)(0x00000000)
 I (..\BSP\MotorCtrl\motor_ctrl.h\.\BSP\GraySensor\gray_sensor.h)(0x00000000)
-I (..\BSP\LineFollow\line_follow.h)(0x6A688332)
-F (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)()
+I (..\BSP\LineFollow\line_follow.h)(0x6A6888E2)
+F (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)()
 F (..\User\config.syscfg)(0x6A65E8C5)()
-F (..\User\main.c)(0x6A688527)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/main.o -MD)
+F (..\User\main.c)(0x6A68A14F)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/main.o -MD)
 I (..\Source\ti\devices\msp\msp.hl.\Source\ti\devices\DeviceFamily.h)(0x00000000)
 I (..\Source\ti\devices\msp\m0p\mspm0g351x.h)(0x6A5F977F)
 I (D:\EE\ARM\ARMCLANG\include\stdint.h)(0x6569B012)
@@ -643,7 +643,7 @@ I (D:\EE\ARM\ARMCLANG\include\stdio.hi:\EE\ARM\ARMCLANG\include\string.h)(0x0000
 I (..\BSP\delay\delay.hn.\BSP\OLED\spi0_oled.h)(0x00000000)
 I (..\BSP\KeyBoard\keyboard.h\.\BSP\MotorCtrl\motor_ctrl.h)(0x00000000)
 I (..\BSP\GraySensor\gray_sensor.hP.\BSP\LineFollow\line_follow.h)(0x00000000)
-I (..\BSP\IMU\imu_mpu9250.h)(0x6A6882FE)
+I (..\BSP\IMU\imu_mpu9250.h)(0x6A68A142)
 F (..\User\ti_msp_dl_config.c)(0x6A675DF5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O0 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../BSP -I ../BSP/IMU -I ../Source -I ../Source/third_party/CMSIS/Core/Include -I ../User -I ../BSP/delay -I ../BSP/OLED-D__UVISION_VERSION="539" -D__MSPM0G3519__ -D__MSPM0G3519__-o ../output/ti_msp_dl_config.o -MD)
 I (..\User\ti_msp_dl_config.h)(0x6A675DF5)
 I (..\Source\ti\devices\DeviceFamily.h)(0x6A5F977F)

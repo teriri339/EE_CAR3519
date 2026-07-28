@@ -53,7 +53,7 @@ int main(void)
     static bool line_follow_active = false;
     static bool show_pid_params = false;
     static bool show_gyro_debug = false;
-    static bool imu_ok = false;
+    static int imu_status = -1;
     static uint16_t follow_cnt = 0;
 
     OLED_Init();
@@ -62,7 +62,7 @@ int main(void)
     keyboard_init();
     motor_ctrl_init();
     gray_sensor_init();
-    imu_ok = (imu_init() == 0);   /* MPU9250 陀螺仪, 记录结果 */
+    imu_status = imu_init();   /* MPU9250 陀螺仪 */
 
     /* 显示主菜单 */
     show_main_menu(current_speed);
@@ -394,20 +394,37 @@ int main(void)
             /* 陀螺仪诊断实时刷新 */
             char buf[17];
 
-            if (!imu_ok)
+            if (imu_status != 0)
             {
                 OLED_ShowString(0, 1, (u8*)"IMU NOT FOUND!  ");
-                OLED_ShowString(0, 2, (u8*)"Check SDA/SCL   ");
-                OLED_ShowString(0, 3, (u8*)"wiring & 3.3V   ");
+                if (imu_status == -1)
+                {
+                    /* 实时扫描 I2C 总线 */
+                    uint8_t dev = imu_scan_i2c();
+                    if (dev != 0)
+                        snprintf(buf, sizeof(buf), "Dev@0x%02X (not68)", dev);
+                    else
+                        snprintf(buf, sizeof(buf), "No I2C device!  ");
+                    OLED_ShowString(0, 2, (u8*)buf);
+                }
+                else if (imu_status == -2)
+                    OLED_ShowString(0, 2, (u8*)"WHO_AM_I fail    ");
+                else if (imu_status == -3)
+                    OLED_ShowString(0, 2, (u8*)"PWR_MGMT fail    ");
+                else
+                    OLED_ShowString(0, 2, (u8*)"GYRO_CONFIG fail ");
+                OLED_ShowString(0, 3, (u8*)"Chk wiring + pwr ");
                 OLED_ShowString(0, 7, (u8*)"A:Gray  *:Back  ");
                 delay_ms(200);
                 continue;
             }
 
             int16_t gyro_z = imu_get_gyro_z();
+            uint8_t whoami = imu_get_whoami();
             int16_t dps_approx = gyro_z * 10 / 131;  /* °/s ×10 */
 
-            snprintf(buf, sizeof(buf), "Z raw: %-6d   ", gyro_z);
+            /* WHO_AM_I (hex) + Z raw */
+            snprintf(buf, sizeof(buf), "ID:%02X Z:%6d", whoami, gyro_z);
             OLED_ShowString(0, 1, (u8*)buf);
 
             snprintf(buf, sizeof(buf), "dps : %-4d.%1d    ",
